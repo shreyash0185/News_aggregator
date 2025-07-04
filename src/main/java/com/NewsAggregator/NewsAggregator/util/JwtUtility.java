@@ -1,5 +1,6 @@
 package com.NewsAggregator.NewsAggregator.util;
 
+import com.NewsAggregator.NewsAggregator.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -59,5 +60,28 @@ public class JwtUtility {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public static Long extractUserIdFromToken(String authHeader) {
+        Claims claims = getClaimsFromToken(authHeader);
+        if (claims != null) {
+            String username = claims.getSubject();
+            // Assuming the user ID is stored in the subject field
+            // You might need to adjust this based on your token structure
+            return Long.parseLong(username);
+        }
+        return null; // or throw an exception if needed
+    }
+
+    public static User getUserFromToken(String authHeader) {
+
+        Claims claims = getClaimsFromToken(authHeader);
+        if (claims != null) {
+            String username = claims.getSubject();
+            String role = (String) claims.get("roles");
+            Long userId = extractUserIdFromToken(authHeader);
+            return new User(userId, true, role, null, username); // Assuming password is not needed here
+        }
+        return null; // or throw an exception if needed
     }
 }

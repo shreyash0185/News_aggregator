@@ -35,6 +35,15 @@ public class User {
         // Default constructor
     }
 
+    //User constructor for creating a new user
+    public User(User user) {
+        this.id = user.getUserId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.role = user.getRole();
+        this.isEnabled = user.isEnabled();
+    }
+
     public Long getUserId() {
         return id;
     }

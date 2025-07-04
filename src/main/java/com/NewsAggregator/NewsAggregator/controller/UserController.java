@@ -4,6 +4,7 @@ package com.NewsAggregator.NewsAggregator.controller;
 import com.NewsAggregator.NewsAggregator.entity.User;
 import com.NewsAggregator.NewsAggregator.entity.UserDTO;
 import com.NewsAggregator.NewsAggregator.service.AuthenticationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,7 @@ public class UserController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody UserDTO userDTO){
+    public User registerUser(@RequestBody  @Valid UserDTO userDTO){
         User registeredUser = authenticationService.registerUser(userDTO);
         String generatedToken = UUID.randomUUID().toString();
         String applicationUrl = "http://localhost:8080/verify?token=" + generatedToken;
@@ -41,7 +42,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public String signIn(@RequestParam("username") String username, @RequestParam("password") String password) {
         return authenticationService.authenticateUser(username, password);
     }
