@@ -11,3 +11,6 @@ public class NewsAggregatorApplication {
 	}
 
 }
+
+
+//Your API key is: a836c8875eeb48d597ff649a874a249c
