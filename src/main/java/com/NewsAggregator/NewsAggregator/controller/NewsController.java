@@ -2,10 +2,8 @@ package com.NewsAggregator.NewsAggregator.controller;
 
 import com.NewsAggregator.NewsAggregator.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -22,6 +20,13 @@ public class NewsController {
                                    @RequestParam(defaultValue = "popularity") String sortBy) {
 
         return newsService.searchNews(q, from, to, sortBy);
+    }
+
+    @GetMapping("/search/{keyword}")
+    public Mono<ResponseEntity<String>> searchByKeyword(@PathVariable String keyword) {
+        return newsService.searchNewsByKeyword(keyword)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
 
